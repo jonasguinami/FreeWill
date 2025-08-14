@@ -170,6 +170,12 @@ document.addEventListener('DOMContentLoaded', () => {
 async function getAIResponse(userMessage) {
     const apiUrl = 'http://127.0.0.1:8080/completion';
 
+    // INSTRUÇÃO PARA A IA: Aqui a gente diz ao modelo como ele deve se comportar.
+    const systemPrompt = "A seguir, uma conversa entre um usuário e um assistente de IA. O assistente é prestativo, criativo e responde sempre em português do Brasil.";
+    
+    // Montamos o prompt completo com a instrução.
+    const fullPrompt = `${systemPrompt}\n\nUser: ${userMessage}\nAI:`;
+
     try {
         const response = await fetch(apiUrl, {
             method: 'POST',
@@ -177,10 +183,11 @@ async function getAIResponse(userMessage) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                prompt: `User: ${userMessage}\nAI:`, // Formato de prompt comum
+                // Enviamos o prompt completo com a instrução
+                prompt: fullPrompt,
                 n_predict: 256, // Número máximo de tokens para gerar
                 temperature: 0.7,
-                stream: false // Para esta configuração simples, não usaremos stream
+                stream: false
             })
         });
 
@@ -190,17 +197,16 @@ async function getAIResponse(userMessage) {
 
         const data = await response.json();
         
-        // Remove o indicador de "Digitando..." e adiciona a resposta da IA
         removeTypingIndicator();
-        // O texto da resposta vem em 'data.content'
         addAIMessage(data.content.trim()); 
 
     } catch (error) {
         console.error("Erro ao conectar com o servidor local:", error);
         removeTypingIndicator();
-        addAIMessage("Oops! Não consegui me conectar ao servidor no seu PC. Verifique se o terminal com o `llama.cpp` está aberto e rodando.");
+        addAIMessage("Oops! Não consegui me conectar ao servidor no seu PC. Verifique se o terminal com o `llama-server.exe` está aberto e rodando.");
     }
 }
+
     // Fim da atualização da função getAIResponse
 
 });
