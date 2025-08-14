@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ajusta a altura do textarea dinamicamente
     messageInput.addEventListener('input', () => {
         messageInput.style.height = 'auto';
-        messageInput.style.height = (messageInput.scrollHeight) + 'px';
+        const scrollHeight = messageInput.scrollHeight;
+        messageInput.style.height = `${scrollHeight}px`;
     });
 
     // Evento de envio do formulário
@@ -20,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
             messageInput.value = '';
             messageInput.style.height = 'auto'; // Reseta a altura
             
-            // Simula o "digitando..." e chama a IA
             showTypingIndicator();
             getAIResponse(messageText);
         }
@@ -32,52 +32,63 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function addUserMessage(message) {
-        const messageElement = `
-            <div class="message-wrapper">
-                <div class="message user-message">
-                    <p>${message}</p>
-                </div>
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message-wrapper');
+        messageElement.innerHTML = `
+            <div class="message user-message">
+                <p>${escapeHTML(message)}</p>
             </div>
         `;
-        chatWindow.innerHTML += messageElement;
+        chatWindow.appendChild(messageElement);
         scrollToBottom();
     }
 
     function addAIMessage(message) {
         const messageId = `ai-msg-${Date.now()}`;
-        const messageElement = `
-            <div class="message-wrapper">
-                <div class="message ai-message">
-                    <p>${message}</p>
-                </div>
-                <div class="message-actions">
-                    <button class="action-button like-btn" data-target="${messageId}" title="Gostei">
-                        <img src="assets/like.svg" alt="Like">
-                    </button>
-                    <button class="action-button dislike-btn" data-target="${messageId}" title="Não gostei">
-                        <img src="assets/like.svg" alt="Dislike" style="transform: rotate(180deg);">
-                    </button>
-                </div>
+        const messageWrapper = document.createElement('div');
+        messageWrapper.classList.add('message-wrapper');
+
+        // ADIÇÃO: Novos botões de copiar e compartilhar no template
+        messageWrapper.innerHTML = `
+            <div class="message ai-message">
+                <p>${escapeHTML(message)}</p>
+            </div>
+            <div class="message-actions">
+                <button class="action-button copy-btn" title="Copiar resposta">
+                    <img src="assets/copy.svg" alt="Copiar">
+                </button>
+                <button class="action-button share-btn" title="Compartilhar">
+                    <img src="assets/share.svg" alt="Compartilhar">
+                </button>
+                <button class="action-button like-btn" title="Gostei">
+                    <img src="assets/like.svg" alt="Like">
+                </button>
+                <button class="action-button dislike-btn" title="Não gostei">
+                    <img src="assets/like.svg" alt="Dislike" style="transform: rotate(180deg);">
+                </button>
             </div>
         `;
-        chatWindow.innerHTML += messageElement;
+        chatWindow.appendChild(messageWrapper);
         
         // Adiciona os eventos de clique para os novos botões
-        document.querySelector(`.like-btn[data-target="${messageId}"]`).addEventListener('click', handleFeedback);
-        document.querySelector(`.dislike-btn[data-target="${messageId}"]`).addEventListener('click', handleFeedback);
+        messageWrapper.querySelector('.copy-btn').addEventListener('click', handleCopy);
+        messageWrapper.querySelector('.share-btn').addEventListener('click', handleShare);
+        messageWrapper.querySelector('.like-btn').addEventListener('click', handleFeedback);
+        messageWrapper.querySelector('.dislike-btn').addEventListener('click', handleFeedback);
         
         scrollToBottom();
     }
     
     function showTypingIndicator() {
-        const typingElement = `
-            <div class="message-wrapper" id="typing-indicator">
-                <div class="message ai-message">
-                    <p>Digitando...</p>
-                </div>
+        const typingElement = document.createElement('div');
+        typingElement.classList.add('message-wrapper');
+        typingElement.id = 'typing-indicator';
+        typingElement.innerHTML = `
+            <div class="message ai-message">
+                <p>Digitando...</p>
             </div>
         `;
-        chatWindow.innerHTML += typingElement;
+        chatWindow.appendChild(typingElement);
         scrollToBottom();
     }
 
@@ -88,79 +99,97 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function handleFeedback(event) {
-        // Lógica para feedback - aqui você pode enviar para uma análise ou apenas dar um feedback visual
+    // NOVA FUNÇÃO: Lida com o clique no botão de copiar
+    function handleCopy(event) {
         const button = event.currentTarget;
-        button.style.filter = 'invert(58%) sepia(98%) saturate(1031%) hue-rotate(222deg) brightness(101%) contrast(98%)'; // Torna o SVG roxo
-        console.log(`Feedback recebido: ${button.title}`);
-        
-        // Desabilita os dois botões do par para evitar múltiplos cliques
+        const messageWrapper = button.closest('.message-wrapper');
+        const messageText = messageWrapper.querySelector('.ai-message p').innerText;
+
+        navigator.clipboard.writeText(messageText).then(() => {
+            // Feedback visual de sucesso
+            button.innerHTML = '<img src="assets/like.svg" alt="Copiado!" style="filter: invert(1);">'; // Ícone temporário de "check"
+            setTimeout(() => {
+                button.innerHTML = '<img src="assets/copy.svg" alt="Copiar">';
+            }, 1500);
+        }).catch(err => {
+            console.error('Falha ao copiar texto: ', err);
+            alert("Não foi possível copiar o texto.");
+        });
+    }
+
+    // NOVA FUNÇÃO: Lida com o clique no botão de compartilhar
+    async function handleShare(event) {
+        const button = event.currentTarget;
+        const messageWrapper = button.closest('.message-wrapper');
+        const messageText = messageWrapper.querySelector('.ai-message p').innerText;
+
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Resposta do Assistente IA',
+                    text: messageText,
+                });
+            } catch (error) {
+                console.error('Erro ao compartilhar:', error);
+            }
+        } else {
+            // Fallback para navegadores que não suportam a Web Share API
+            alert("Seu navegador não suporta compartilhamento. O texto foi copiado para a área de transferência.");
+            handleCopy(event); // Reutiliza a função de cópia
+        }
+    }
+
+    function handleFeedback(event) {
+        const button = event.currentTarget;
         const wrapper = button.parentElement;
-        wrapper.querySelectorAll('.action-button').forEach(btn => btn.disabled = true);
+        
+        // Desabilita todos os botões de feedback (like/dislike) para evitar cliques duplos
+        wrapper.querySelectorAll('.like-btn, .dislike-btn').forEach(btn => {
+            btn.disabled = true;
+            btn.style.opacity = '0.3';
+        });
+
+        // Destaca o botão clicado
+        button.style.opacity = '1';
+        button.style.transform = 'scale(1.15)';
+        console.log(`Feedback recebido: ${button.title}`);
     }
 
     function scrollToBottom() {
         chatWindow.scrollTo({ top: chatWindow.scrollHeight, behavior: 'smooth' });
     }
 
-    // ===================================================================
-    // AQUI VAI A MÁGICA: Conectando com o modelo de IA
-    // ===================================================================
+    function escapeHTML(str) {
+        const p = document.createElement('p');
+        p.appendChild(document.createTextNode(str));
+        return p.innerHTML;
+    }
+
     async function getAIResponse(userMessage) {
-        // Simulação de resposta da IA com um atraso
-        // **SUBSTITUA ESTE BLOCO pelo código real de chamada da IA**
-        setTimeout(() => {
-            removeTypingIndicator();
-            const DUMMY_RESPONSE = "Esta é uma resposta simulada. Para fazer isso funcionar de verdade, você precisa conectar esta interface a um backend que rode o modelo Mistral 7B. Veja as explicações na documentação do projeto.";
-            addAIMessage(DUMMY_RESPONSE);
-        }, 2000); // Atraso de 2 segundos para simular processamento
-        
-        /*
-        // --- MÉTODO 1: CHAMADA DE API (RECOMENDADO) ---
-        // Você precisaria de um servidor rodando o modelo
-        
+        const apiUrl = 'http://127.0.0.1:8080/completion';
+
         try {
-            const response = await fetch('URL_DA_SUA_API_DO_MISTRAL', {
+            const response = await fetch(apiUrl, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ prompt: userMessage })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    prompt: `User: ${userMessage}\nAI:`,
+                    n_predict: 256,
+                    temperature: 0.7,
+                    stream: false
+                })
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`Erro na API: ${response.statusText}`);
 
             const data = await response.json();
             removeTypingIndicator();
-            addAIMessage(data.response); // Supondo que a API retorne { "response": "texto..." }
+            addAIMessage(data.content.trim());
 
         } catch (error) {
-            console.error("Erro ao chamar a API:", error);
+            console.error("Erro ao conectar com o servidor local:", error);
             removeTypingIndicator();
-            addAIMessage("Desculpe, não consegui me conectar ao meu cérebro. Tente novamente mais tarde.");
+            addAIMessage("Oops! Não consegui me conectar ao servidor no seu PC. Verifique se o terminal com o `llama.cpp` está aberto e rodando.");
         }
-        */
-        
-        /*
-        // --- MÉTODO 2: USANDO transformers.js (EXPERIMENTAL) ---
-        // Exigiria configuração adicional e importação da biblioteca.
-        // https://huggingface.co/docs/transformers.js/index
-        
-        // Exemplo hipotético (requer a importação da lib no seu HTML)
-        import { pipeline } from '@xenova/transformers';
-
-        // ... (código para carregar o modelo na primeira vez)
-        
-        let generator = await pipeline('text-generation', 'Xenova/mistral-7b-instruct-v0.2');
-        let output = await generator(userMessage, {
-             max_new_tokens: 256,
-             // ... outros parâmetros
-        });
-        
-        removeTypingIndicator();
-        addAIMessage(output[0].generated_text);
-        */
     }
 });
