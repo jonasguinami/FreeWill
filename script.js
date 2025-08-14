@@ -165,31 +165,42 @@ document.addEventListener('DOMContentLoaded', () => {
         return p.innerHTML;
     }
 
-    async function getAIResponse(userMessage) {
-        const apiUrl = 'http://127.0.0.1:8080/completion';
+    // ATUALIZE ESTA FUNÇÃO NO SEU script.js
 
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    prompt: `User: ${userMessage}\nAI:`,
-                    n_predict: 256,
-                    temperature: 0.7,
-                    stream: false
-                })
-            });
+async function getAIResponse(userMessage) {
+    const apiUrl = 'http://127.0.0.1:8080/completion';
 
-            if (!response.ok) throw new Error(`Erro na API: ${response.statusText}`);
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                prompt: `User: ${userMessage}\nAI:`, // Formato de prompt comum
+                n_predict: 256, // Número máximo de tokens para gerar
+                temperature: 0.7,
+                stream: false // Para esta configuração simples, não usaremos stream
+            })
+        });
 
-            const data = await response.json();
-            removeTypingIndicator();
-            addAIMessage(data.content.trim());
-
-        } catch (error) {
-            console.error("Erro ao conectar com o servidor local:", error);
-            removeTypingIndicator();
-            addAIMessage("Oops! Não consegui me conectar ao servidor no seu PC. Verifique se o terminal com o `llama.cpp` está aberto e rodando.");
+        if (!response.ok) {
+            throw new Error(`Erro na API: ${response.statusText}`);
         }
+
+        const data = await response.json();
+        
+        // Remove o indicador de "Digitando..." e adiciona a resposta da IA
+        removeTypingIndicator();
+        // O texto da resposta vem em 'data.content'
+        addAIMessage(data.content.trim()); 
+
+    } catch (error) {
+        console.error("Erro ao conectar com o servidor local:", error);
+        removeTypingIndicator();
+        addAIMessage("Oops! Não consegui me conectar ao servidor no seu PC. Verifique se o terminal com o `llama.cpp` está aberto e rodando.");
     }
+}
+    // Fim da atualização da função getAIResponse
+
 });
