@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Chat IA</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="chat-container">
+        
+        <header class="chat-header">
+            <h1>Mistral 7B</h1>
+            <p>Seu assistente pessoal</p>
+            <button id="scrollToTopBtn" class="header-button" title="Voltar ao início">
+                <img src="assets/arrow-down.svg" alt="Voltar ao início">
+            </button>
+        </header>
+
+        <main id="chat-window" class="chat-window">
+            <div class="message-wrapper">
+                <div class="message ai-message">
+                    <p>Olá! Como posso ajudar você hoje?</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="chat-footer">
+            <form id="chat-form" class="chat-form">
+                <textarea id="message-input" placeholder="Digite sua mensagem..." rows="1"></textarea>
+                <button type="submit" class="send-button" title="Enviar Mensagem">
+                    <img src="assets/send.svg" alt="Enviar">
+                </button>
+            </form>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
