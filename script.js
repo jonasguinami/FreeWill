@@ -168,9 +168,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // ATUALIZE ESTA FUNÇÃO NO SEU script.js
 
 async function getAIResponse(userMessage) {
-    const apiUrl = 'http://127.0.0.1:8080/completion';
+    // ATUALIZAÇÃO: Usando o IP da sua rede local
+    const apiUrl = 'http://192.168.1.35:8080/completion';
 
-    // INSTRUÇÃO PARA A IA: Aqui a gente diz ao modelo como ele deve se comportar.
+    // Instrução para a IA
     const systemPrompt = "A seguir, uma conversa entre um usuário e um assistente de IA. O assistente é prestativo, criativo e responde sempre em português do Brasil.";
     
     // Montamos o prompt completo com a instrução.
@@ -185,7 +186,7 @@ async function getAIResponse(userMessage) {
             body: JSON.stringify({
                 // Enviamos o prompt completo com a instrução
                 prompt: fullPrompt,
-                n_predict: 256, // Número máximo de tokens para gerar
+                n_predict: 256, 
                 temperature: 0.7,
                 stream: false
             })
@@ -203,7 +204,7 @@ async function getAIResponse(userMessage) {
     } catch (error) {
         console.error("Erro ao conectar com o servidor local:", error);
         removeTypingIndicator();
-        addAIMessage("Oops! Não consegui me conectar ao servidor no seu PC. Verifique se o terminal com o `llama-server.exe` está aberto e rodando.");
+        addAIMessage("Oops! Não consegui me conectar ao servidor no seu PC. Verifique se o terminal com o `llama-server.exe` está aberto e rodando, e se o Firewall do Windows está permitindo a conexão.");
     }
 }
 
