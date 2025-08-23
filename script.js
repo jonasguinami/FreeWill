@@ -348,7 +348,7 @@ function deleteLastTurn() {
 
 
     async function getAIResponse() {
-        const apiUrl = 'http://192.168.1.46:8080/completion'; // URL do servidor local
+        const apiUrl = 'https://wonder-literacy-recruitment-departmental.trycloudflare.com'
         const activeChat = allChats.find(chat => chat.id === activeChatId);
         if (!activeChat) return;
 

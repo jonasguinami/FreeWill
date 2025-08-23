@@ -1,7 +1,7 @@
 :root {
     --bg-color: #121212;
     --surface-color: #1e1e1e;
-    --primary-color: #30001b;
+    --primary-color: #254c91;
     --text-color: #e1e1e1;
     --border-color: #333;
     --user-msg-bg: #373737;
@@ -292,7 +292,7 @@ body {
 }
 
 .new-chat-btn:hover {
-    background-color: #4b002d;
+    background-color: #3a5bbf; /* Tom mais claro do roxo */
 
 }
 
