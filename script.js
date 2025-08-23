@@ -348,7 +348,7 @@ function deleteLastTurn() {
 
 
     async function getAIResponse() {
-        const apiUrl = 'https://wonder-literacy-recruitment-departmental.trycloudflare.com'
+        const apiUrl = 'https://wonder-literacy-recruitment-departmental.trycloudflare.com/completion';
         const activeChat = allChats.find(chat => chat.id === activeChatId);
         if (!activeChat) return;
 
