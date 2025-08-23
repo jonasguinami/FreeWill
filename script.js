@@ -281,7 +281,7 @@ function downloadChat(chatId) {
 }
 
 function showOptionsMenu(chatId, buttonElement) {
-    // Remove qualquer menu antigo
+    // Remove qualquer menu antigo para evitar duplicação
     const existingMenu = document.getElementById('options-menu');
     if (existingMenu) existingMenu.remove();
 
@@ -292,29 +292,49 @@ function showOptionsMenu(chatId, buttonElement) {
         <button data-action="rename"><img src="assets/pen.svg" alt="Renomear"> Renomear</button>
         <button data-action="share"><img src="assets/share.svg" alt="Compartilhar"> Compartilhar</button>
         <button data-action="download"><img src="assets/download.svg" alt="Download"> Download (.txt)</button>
-        <button data-action="delete"><img src="assets/trash.svg" alt="Excluir"> Excluir</button>
+        <button data-action="delete" style="color: #ff5c5c;"><img src="assets/trash.svg" alt="Excluir"> Excluir</button>
     `;
     document.body.appendChild(menu);
 
+    // Posiciona o menu perto do botão
     const rect = buttonElement.getBoundingClientRect();
     menu.style.display = 'block';
-    menu.style.top = `${rect.bottom}px`;
-    menu.style.left = `${rect.left}px`;
+    menu.style.top = `${rect.bottom + window.scrollY}px`;
+    menu.style.left = `${rect.left + window.scrollX}px`;
 
-    menu.querySelector('[data-action="rename"]').onclick = () => renameChat(chatId);
-    menu.querySelector('[data-action="share"]').onclick = () => shareChat(chatId);
-    menu.querySelector('[data-action="download"]').onclick = () => downloadChat(chatId);
+    // Função para fechar o menu
+    const closeMenu = () => {
+        const menuToClose = document.getElementById('options-menu');
+        if (menuToClose) menuToClose.remove();
+    };
+
+    // Adiciona as ações e garante que o menu feche depois
+    menu.querySelector('[data-action="rename"]').onclick = () => {
+        renameChat(chatId);
+        closeMenu();
+    };
+    menu.querySelector('[data-action="share"]').onclick = () => {
+        shareChat(chatId);
+        closeMenu();
+    };
+    menu.querySelector('[data-action="download"]').onclick = () => {
+        downloadChat(chatId);
+        closeMenu();
+    };
     menu.querySelector('[data-action="delete"]').onclick = () => {
         if (confirm('Tem certeza que deseja excluir esta conversa?')) {
             deleteChat(chatId);
         }
+        closeMenu();
     };
 
-    // Fecha o menu se clicar fora
+    // Armadilha para fechar o menu se clicar fora dele
     setTimeout(() => {
         document.addEventListener('click', (e) => {
-            if (!menu.contains(e.target)) {
-                menu.remove();
+            const currentMenu = document.getElementById('options-menu');
+            // Fecha se o menu existir E o clique não for dentro dele E não for no botão que o abriu
+            if (currentMenu && !currentMenu.contains(e.target) && !buttonElement.contains(e.target)) {
+                closeMenu();
             }
         }, { once: true });
     }, 0);
@@ -390,6 +410,24 @@ function deleteLastTurn() {
     // ===================================================================
     // EVENT LISTENERS (OS "CÉREBROS" DOS BOTÕES)
     // ===================================================================
+
+    // CORREÇÃO 1: Adicionado o event listener para o input
+    messageInput.addEventListener('input', () => {
+        messageInput.style.height = 'auto';
+        messageInput.style.height = `${messageInput.scrollHeight}px`;
+    });
+
+    chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const messageText = messageInput.value.trim();
+        if (messageText) {
+            addUserMessage(messageText, true);
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+            showTypingIndicator();
+            getAIResponse();
+        }
+    });
 
     chatForm.addEventListener('submit', (e) => {
         e.preventDefault();
