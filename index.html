@@ -2,45 +2,63 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <!-- META TAG ATUALIZADA: Desabilita o zoom e garante a escala correta -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Meu Chat IA</title>
+    <title>Guinam-IA</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Scripts para renderizar o código da IA de forma bonita -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 
     <div class="chat-container">
         
+        <!-- CABEÇALHO CORRIGIDO -->
         <header class="chat-header">
-            <h1>Mistral 7B</h1>
-            <p>Seu assistente pessoal</p>
-            <button id="scrollToTopBtn" class="header-button" title="Voltar ao início">
+            <button id="toggle-sidebar-btn" class="sidebar-toggle-btn" title="Mostrar conversas">
+                <img src="assets/list.svg" alt="Lista de Conversas">
+            </button>
+            <h1>Guinam-IA</h1>
+            <p>Sua inteligência artificial</p>
+            <button id="scrollToTopBtn" class="header-button-up" title="Voltar ao início">
                 <img src="assets/arrow-down.svg" alt="Voltar ao início">
+            </button>
+            <button id="scrollToDownBtn" class="header-button-down" title="Voltar ao fim">
+                <img src="assets/arrow-down.svg" alt="Voltar ao fim">
             </button>
         </header>
 
+        <!-- BARRA LATERAL (SIDEBAR) -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <button id="new-chat-btn" class="new-chat-btn">
+                    Nova Conversa
+                </button>
+            </div>
+            <nav id="chat-list" class="chat-list">
+                <!-- A lista de conversas será gerada aqui pelo JavaScript -->
+            </nav>
+        </aside>
+
+        <!-- JANELA PRINCIPAL DO CHAT -->
         <main id="chat-window" class="chat-window">
             <!-- As mensagens do chat serão inseridas aqui via JavaScript -->
-            <div class="message-wrapper">
-                <div class="message ai-message">
-                    <p>Olá! Como posso ajudar você hoje?</p>
-                </div>
-                <!-- Botões de ação para a mensagem inicial (exemplo) -->
-                <div class="message-actions">
-                     <button class="action-button" title="Copiar" onclick="alert('Funcionalidade de cópia implementada para mensagens geradas.')"><img src="assets/copy.svg" alt="Copiar"></button>
-                     <button class="action-button" title="Compartilhar" onclick="alert('Funcionalidade de compartilhamento implementada para mensagens geradas.')"><img src="assets/share.svg" alt="Compartilhar"></button>
-                     <button class="action-button" title="Gostei"><img src="assets/like.svg" alt="Like"></button>
-                     <button class="action-button" title="Não gostei"><img src="assets/like.svg" alt="Dislike" style="transform: rotate(180deg);"></button>
-                </div>
-            </div>
+            <!-- A mensagem inicial foi removida daqui, pois o JS irá criá-la -->
         </main>
 
+        <!-- RODAPÉ CORRIGIDO -->
         <footer class="chat-footer">
             <form id="chat-form" class="chat-form">
+                <button type="button" id="upload-file-btn" class="upload-btn" title="Anexar arquivo">
+                    <img src="assets/archive.svg" alt="Anexar">
+                </button>
+                <input type="file" id="file-input" hidden accept=".txt,.pdf">
+
                 <textarea id="message-input" placeholder="Digite sua mensagem..." rows="1"></textarea>
+                
                 <button type="submit" class="send-button" title="Enviar Mensagem">
                     <img src="assets/send.svg" alt="Enviar">
                 </button>
