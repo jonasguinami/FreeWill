@@ -368,7 +368,7 @@ function deleteLastTurn() {
 
 
     async function getAIResponse() {
-        const apiUrl = 'https://urban-buddy-sanyo-rays.trycloudflare.com/completion';
+        const apiUrl = ' https://bunny-fifty-hat-babies.trycloudflare.com/completion';
         const activeChat = allChats.find(chat => chat.id === activeChatId);
         if (!activeChat) return;
 
