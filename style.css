@@ -416,3 +416,73 @@ body {
         max-width: 90%;
     }
 }
+
+
+/* NOVO: Animação para o indicador de "Pensando..." */
+.dot-pulse {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 24px; /* Altura da linha de texto */
+}
+
+.dot-pulse span {
+    width: 8px;
+    height: 8px;
+    background-color: var(--text-color);
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: dotPulse 1.4s infinite ease-in-out;
+}
+
+.dot-pulse span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dot-pulse span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes dotPulse {
+    0%, 80%, 100% {
+        transform: scale(0.6);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ... código existente ... */
+
+.streaming-cursor {
+    display: inline-block; /* Garante que a animação não quebre a linha */
+    animation: blink 1s infinite;
+    color: var(--text-color);
+    margin-left: 1px;
+    font-weight: lighter; /* Deixa o cursor mais fino */
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Adicione no final do seu style.css */
+.new-chat-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Espaço entre o ícone e o texto */
+}
+
+.new-chat-btn img {
+    width: 20px; /* Ajuste o tamanho do ícone como preferir */
+    height: 20px;
+}
