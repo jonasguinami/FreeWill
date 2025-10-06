@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sendButtonImg.src = 'assets/pause.svg';
     sendButton.title = 'Pausar geração';
     
-    const apiUrl = 'https://bunny-fifty-hat-babies.trycloudflare.com/completion'; // VERIFIQUE SEU LINK!
+    const apiUrl = 'https://coming-showed-laugh-inspections.trycloudflare.com/completion'; // VERIFIQUE SEU LINK!
     const activeChat = allChats.find(chat => chat.id === activeChatId);
     if (!activeChat) {
         stopGeneration();
