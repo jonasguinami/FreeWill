@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sendButtonImg.src = 'assets/pause.svg';
     sendButton.title = 'Pausar geração';
     
-    const apiUrl = ' https://lawn-cleared-believes-getting.trycloudflare.com/completion'; // VERIFIQUE SEU LINK!
+    const apiUrl = 'https://mas-sorry-driver-witness.trycloudflare.com/completion'; // VERIFIQUE SEU LINK!
     const activeChat = allChats.find(chat => chat.id === activeChatId);
     if (!activeChat) {
         stopGeneration();
