@@ -3,24 +3,38 @@
 Acesse (Entre em contato comigo para ativar o servidor): https://jonasguinami.github.io/FreeWill/
 
 🧠 FreeWill AI
-Local LLM Fine-tuning & RAG Pipeline
+Local LLM Fine-tuning & RAG Engine
 
-O FreeWill AI é uma iniciativa de pesquisa e desenvolvimento focada na soberania computacional de modelos de linguagem (LLMs). O projeto explora a fronteira entre modelos locais leves e a capacidade de expansão de conhecimento via RAG (Retrieval-Augmented Generation), garantindo que a inteligência artificial opere de forma independente, privada e eficiente em hardware doméstico.
+O FreeWill AI é um ecossistema de pesquisa focado na autonomia total de modelos de linguagem. O projeto se diferencia por não depender de abstrações de terceiros, operando diretamente com modelos da biblioteca Hugging Face e um Small Language Model (SLM) proprietário, desenvolvido e treinado com foco em eficiência extrema e execução local.
 
-🚀 Visão Geral
-Diferente de soluções baseadas em nuvem, o FreeWill foca na autonomia. O projeto utiliza pipelines customizados para ajustar modelos (Fine-tuning) e alimentá-los com bases de dados proprietárias, permitindo que a IA compreenda contextos específicos sem depender de APIs externas.
+🚀 Diferenciais Técnicos
+Custom SLM (35M): Desenvolvimento e fine-tuning de um modelo próprio de 35 milhões de parâmetros, otimizado para contextos específicos onde latência e privacidade são críticas.
 
-Fine-tuning Local: Otimização de parâmetros para tarefas específicas.
+Direct HF Integration: Pipeline construído para carregar, manipular e testar modelos do Hugging Face sem camadas intermediárias desnecessárias.
 
-RAG (Retrieval-Augmented Generation): Expansão dinâmica de conhecimento sem necessidade de retraining constante.
+RAG Nativo: Expansão de conhecimento via Retrieval-Augmented Generation, permitindo que o modelo consulte bases de dados locais em tempo real.
 
-Datasets Curados: Processamento de mais de 35 milhões de parâmetros para contextos especializados.
+Hardware Agnostic: Projetado para rodar em hardware doméstico, extraindo o máximo de performance de CPUs e GPUs locais através de otimização de tensores.
 
-🛠️ Stack Técnica
-Core: Python, PyTorch.
+🛠️ Stack Tecnológica
+Linguagem: Python
 
-LLM Engine: Hugging Face Transformers e Modelos próprios de conteúdos massivos.
+Deep Learning: PyTorch / Transformers (Hugging Face)
 
-Vector DB: FAISS / ChromaDB (para o pipeline de RAG).
+Processamento de Dados: Tokenizadores customizados para o modelo de 35M.
 
-Architecture: Focado em SLMs (Small Language Models) para execução eficiente em CPU/GPU local.
+Vetores/RAG: Bibliotecas de busca semântica para indexação de documentos.
+
+🔬 Pesquisa de Fine-tuning
+O foco deste repositório é o desenvolvimento de pipelines de treinamento que permitem:
+
+Injeção de conhecimento especializado em modelos pré-treinados.
+
+Refinamento do modelo proprietário (FreeWill-35M) para tarefas de lógica e processamento de linguagem natural.
+
+Curadoria de datasets customizados para treinamento de baixo nível.
+
+📜 Filosofia
+O FreeWill AI nasce da premissa de que a inteligência artificial deve ser um utilitário local, privado e moldável pelo seu criador. Menos "caixa preta", mais controle sobre os pesos e a arquitetura.
+
+Nota: Este projeto é uma implementação de "AI Bare-Metal", focada em quem busca entender o que acontece entre as camadas da rede neural, longe de instaladores automatizados.
