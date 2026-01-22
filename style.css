@@ -17,7 +17,7 @@
 
 html, body {
     height: 100%;
-    overflow: hidden; /* Previne a rolagem do corpo da página */
+    overflow: hidden;
 }
 
 body {
@@ -29,8 +29,6 @@ body {
 .chat-container {
     display: flex;
     flex-direction: column;
-    /* MUDANÇA CRÍTICA: Usa a altura dinâmica do viewport (dvh) */
-    /* Isso garante que o container ocupe 100% da área visível, mesmo com as barras do navegador móvel */
     height: 100dvh; 
     max-width: 800px;
     margin: 0 auto;
@@ -61,7 +59,6 @@ body {
     position: absolute;
     right: 1.5rem;
     top: 50%;
-    /* CORREÇÃO: Centraliza o botão e o move para cima pela metade da altura do grupo */
     transform: translateY(calc(-50% - 12px));
     background: none;
     border: none;
@@ -75,10 +72,9 @@ body {
 }
 
 .header-button-up img {
-    /* Deixando os ícones maiores novamente */
     width: 24px;
     height: 24px;
-    transform: rotate(180deg); /* Gira a seta para apontar para cima */
+    transform: rotate(180deg); 
 }
 
 /* Botão de Rolagem para o Fim (DOWN) */
@@ -86,7 +82,6 @@ body {
     position: absolute;
     right: 1.5rem;
     top: 50%;
-    /* CORREÇÃO: Centraliza o botão e o move para baixo pela metade da altura do grupo */
     transform: translateY(calc(-50% + 12px));
     background: none;
     border: none;
@@ -100,10 +95,8 @@ body {
 }
 
 .header-button-down img {
-    /* Deixando os ícones maiores novamente */
     width: 24px;
     height: 24px;
-    /* Rotação removida, assumindo que o SVG original (arrow-down.svg) já aponta para baixo */
     transform: none; 
 }
 
@@ -121,7 +114,7 @@ body {
 .message-wrapper {
     display: flex;
     flex-direction: column;
-    max-width: 100%; /* Garante que o wrapper não ultrapasse a largura */
+    max-width: 100%;
 }
 
 .message {
@@ -129,7 +122,7 @@ body {
     padding: 0.8rem 1.2rem;
     border-radius: 18px;
     line-height: 1.5;
-    word-wrap: break-word; /* Garante a quebra de palavras longas */
+    word-wrap: break-word;
 }
 
 .user-message {
@@ -146,10 +139,10 @@ body {
 
 .message-actions {
     display: flex;
-    gap: 0.75rem; /* Aumentei um pouco o espaçamento */
+    gap: 0.75rem;
     margin-top: 0.75rem;
     align-self: flex-start;
-    padding-left: 0.5rem; /* Pequeno recuo para alinhar melhor */
+    padding-left: 0.5rem;
 }
 
 .action-button {
@@ -172,7 +165,7 @@ body {
 .action-button img {
     width: 18px;
     height: 18px;
-    vertical-align: middle; /* Alinha melhor o ícone */
+    vertical-align: middle;
 }
 
 /* Rodapé Fixo */
@@ -180,12 +173,12 @@ body {
     padding: 1rem 1.5rem;
     border-top: 1px solid var(--border-color);
     flex-shrink: 0;
-    background-color: var(--surface-color); /* Garante que o fundo não seja transparente */
+    background-color: var(--surface-color);
 }
 
 .chat-form {
     display: flex;
-    align-items: flex-end; /* Alinha os itens na base */
+    align-items: flex-end;
     gap: 1rem;
 }
 
@@ -209,8 +202,8 @@ body {
 }
 
 .send-button {
-    background: none; /* Remove o fundo roxo */
-    border: 1px solid var(--border-color); /* Adiciona a borda */
+    background: none;
+    border: 1px solid var(--border-color);
     border-radius: 50%;
     width: 44px;
     height: 44px;
@@ -223,16 +216,16 @@ body {
 }
 
 .send-button:hover {
-    background-color: #2a2a2a; /* Efeito hover igual ao do upload */
+    background-color: #2a2a2a;
 }
 
 .send-button img {
     width: 20px;
     height: 20px;
-    opacity: 0.7; /* Adiciona a opacidade para combinar */
+    opacity: 0.7; 
 }
 
-/* === ESTILOS DA BARRA LATERAL === */
+/* ESTILOS DA BARRA LATERAL */
 
 .sidebar-toggle-btn {
     position: absolute;
@@ -265,13 +258,13 @@ body {
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    transform: translateX(-100%); /* Começa escondida */
+    transform: translateX(-100%);
     transition: transform 0.3s ease-in-out;
     z-index: 100;
 }
 
 .sidebar.visible {
-    transform: translateX(0); /* Fica visível com a classe .visible */
+    transform: translateX(0);
 }
 
 .sidebar-header {
@@ -285,14 +278,14 @@ body {
     background-color: var(--primary-color);
     color: var(--text-color);
     border: none;
-    border-radius: 12px; /* Bastante border-radius */
+    border-radius: 12px;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s;
 }
 
 .new-chat-btn:hover {
-    background-color: #3a5bbf; /* Tom mais claro do roxo */
+    background-color: #3a5bbf;
 
 }
 
@@ -352,7 +345,7 @@ body {
     border-radius: 12px;
     padding: 0.5rem;
     z-index: 110;
-    display: none; /* Começa escondido */
+    display: none;
 }
 
 .options-menu button {
@@ -376,8 +369,7 @@ body {
     margin-right: 0.75rem;
 }
 
-
-/* === ESTILOS DO BOTÃO DE UPLOAD === */
+/* ESTILOS DO BOTÃO DE UPLOAD */
 .upload-btn {
     background: none;
     border: 1px solid var(--border-color);
@@ -402,8 +394,6 @@ body {
     opacity: 0.7;
 }
 
-
-
 /* Responsividade */
 @media (max-width: 600px) {
     .chat-header, .chat-footer {
@@ -417,14 +407,13 @@ body {
     }
 }
 
-
-/* NOVO: Animação para o indicador de "Pensando..." */
+/* Animação para o indicador de "Pensando..." */
 .dot-pulse {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    height: 24px; /* Altura da linha de texto */
+    height: 24px; 
 }
 
 .dot-pulse span {
@@ -455,14 +444,12 @@ body {
     }
 }
 
-/* ... código existente ... */
-
 .streaming-cursor {
-    display: inline-block; /* Garante que a animação não quebre a linha */
+    display: inline-block; 
     animation: blink 1s infinite;
     color: var(--text-color);
     margin-left: 1px;
-    font-weight: lighter; /* Deixa o cursor mais fino */
+    font-weight: lighter;
 }
 
 @keyframes blink {
@@ -474,15 +461,14 @@ body {
     }
 }
 
-/* Adicione no final do seu style.css */
 .new-chat-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px; /* Espaço entre o ícone e o texto */
+    gap: 10px;
 }
 
 .new-chat-btn img {
-    width: 20px; /* Ajuste o tamanho do ícone como preferir */
+    width: 20px; 
     height: 20px;
 }
