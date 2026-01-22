@@ -20,9 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isGenerating = false;
     let abortController = null; // Controlador para pausar a geração
 
-    // ===================================================================
     // FUNÇÕES DE GERENCIAMENTO DE CONVERSAS
-    // ===================================================================
     
     function getSystemPrompt() {
         return {
@@ -128,9 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollToBottom();
     }
 
-    // ===================================================================
     // FUNÇÕES DE EXIBIÇÃO DE MENSAGENS
-    // ===================================================================
 
     function addUserMessage(message, save = true) {
         const messageElement = document.createElement('div');
@@ -176,10 +172,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         scrollToBottom();
     }
-    
-    // ===================================================================
+  
     // FUNÇÕES AUXILIARES E DE INTERFACE
-    // ===================================================================
 
     function showTypingIndicator() {
         // Se já existir, não cria outro
@@ -239,9 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return p.innerHTML;
     }
 
-    // ===================================================================
     // FUNÇÕES DO MENU DE OPÇÕES (RENOMEAR, EXCLUIR, ETC.)
-    // ===================================================================
 
     function deleteChat(chatId) {
         allChats = allChats.filter(chat => chat.id !== chatId);
@@ -350,15 +342,13 @@ document.addEventListener('DOMContentLoaded', () => {
             closeMenu();
         };
 
-        // Adiciona a "armadilha" para fechar o menu ao clicar fora
-        setTimeout(() => { // Usamos setTimeout para garantir que este listener seja adicionado após o evento de clique atual
+        // Adiciona a armadilha para fechar o menu ao clicar fora
+        setTimeout(() => { // Usa setTimeout para garantir que este listener seja adicionado após o evento de clique atual
             document.addEventListener('click', handleOutsideClick);
         }, 0);
     }
 
-    // ===================================================================
     // FUNÇÕES DE AÇÃO DA MENSAGEM DA IA (REFAZER, APAGAR)
-    // ===================================================================
 
     function regenerateLastResponse() {
         if (isGenerating) return;
@@ -385,9 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ===================================================================
     // FUNÇÃO PRINCIPAL DE COMUNICAÇÃO COM A IA (STREAMING)
-    // ===================================================================
 
     async function getAIResponse() {
     isGenerating = true;
@@ -516,9 +504,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 }
 
-
-
-
     function stopGeneration() {
         if (abortController) {
             abortController.abort();
@@ -530,9 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
         removeTypingIndicator();
     }
 
-    // ===================================================================
-    // EVENT LISTENERS (OS "CÉREBROS" DOS BOTÕES)
-    // ===================================================================
+    // EVENT LISTENERS DOS BOTÕES
 
     messageInput.addEventListener('input', () => {
         messageInput.style.height = 'auto';
@@ -552,8 +535,6 @@ document.addEventListener('DOMContentLoaded', () => {
         addUserMessage(messageText, true);
         messageInput.value = '';
         messageInput.dispatchEvent(new Event('input'));
-        
-        // CORREÇÃO: A ORDEM CERTA É ESTA
         showTypingIndicator(); // 1. Mostra a animação
         getAIResponse();       // 2. SÓ DEPOIS chama a IA
     }
